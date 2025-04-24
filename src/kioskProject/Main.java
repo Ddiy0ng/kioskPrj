@@ -18,6 +18,5 @@ public class Main {
 
         //Kiosk 내 시작 함수 호출
         hamburgerKiosk.start();
-
     }
 }

@@ -1,6 +1,6 @@
 package kioskProject;
 
-import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -27,9 +27,17 @@ public class Kiosk {
                 menuItems.get(i).getMenu();
             }
             System.out.println("0. 종료           | 종료");
-            System.out.print("-> ");
-            option = sc.nextInt();
-
+            while(true){
+                System.out.print("-> ");
+                try{
+                    option = sc.nextInt();
+                    sc.nextLine(); //버퍼 비우기
+                    break;
+                }catch(InputMismatchException e){
+                    sc.nextLine(); //버퍼 비우기
+                    System.out.println("잘못된 형식의 입력입니다. 다시 입력하세요.");
+                }
+            }
             switch(option){
                 case 0:
                     System.out.println("프로그램을 종료합니다.");
@@ -59,9 +67,8 @@ public class Kiosk {
                     System.out.println();
                     break;
                 default:
-                    System.out.println("잘못된 입력입니다\n");
+                    System.out.println("지원하지 않는 옵션입니다. 메인메뉴로 돌아갑니다.\n");
                     break;
-                //예외처리 안 함
             }
         }
     }
