@@ -1,7 +1,68 @@
 package kioskProject;
 
-public class Kiosk {
-    //Lv3부터 사용
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
-    //프록램 순서 및 흐름
+public class Kiosk {
+    //관리자용 클래스
+
+    List<MenuItem> menuItems;
+
+    Kiosk(List<MenuItem> menuItems){
+        this.menuItems = menuItems;
+    }
+
+
+
+    public void start(){
+        Scanner sc = new Scanner(System.in);
+
+        int option;
+
+        while(true){
+            System.out.println("[ SHAKESHACK MENU ]");
+            for(int i = 0; i < menuItems.size(); i++){
+                System.out.print((i + 1) + ". ");
+                menuItems.get(i).getMenu();
+            }
+            System.out.println("0. 종료           | 종료");
+            System.out.print("-> ");
+            option = sc.nextInt();
+
+            switch(option){
+                case 0:
+                    System.out.println("프로그램을 종료합니다.");
+                    return;
+                case 1:
+                    System.out.println(menuItems.get(0).getName() + "를 선택하셨습니다.");
+                    System.out.println("가격: " + menuItems.get(0).getPrice());
+                    System.out.println("설명: " + menuItems.get(0).getExplain());
+                    System.out.println();
+                    break;
+                case 2:
+                    System.out.println(menuItems.get(1).getName() + "를 선택하셨습니다.");
+                    System.out.println("가격: " + menuItems.get(1).getPrice());
+                    System.out.println("설명: " + menuItems.get(1).getExplain());
+                    System.out.println();
+                    break;
+                case 3:
+                    System.out.println(menuItems.get(2).getName() + "를 선택하셨습니다.");
+                    System.out.println("가격: " + menuItems.get(2).getPrice());
+                    System.out.println("설명: " + menuItems.get(2).getExplain());
+                    System.out.println();
+                    break;
+                case 4:
+                    System.out.println(menuItems.get(3).getName() + "를 선택하셨습니다.");
+                    System.out.println("가격: " + menuItems.get(3).getPrice());
+                    System.out.println("설명: " + menuItems.get(3).getExplain());
+                    System.out.println();
+                    break;
+                default:
+                    System.out.println("잘못된 입력입니다\n");
+                    break;
+                //예외처리 안 함
+            }
+        }
+    }
 }
