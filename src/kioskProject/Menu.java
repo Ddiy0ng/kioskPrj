@@ -1,9 +1,30 @@
 package kioskProject;
 
-public class Menu {
-    //Lv4부터 사용
+import java.util.ArrayList;
+import java.util.List;
 
+public class Menu {
     //MenuItem 클래스 관리하는 카테고리
-    //: 버거 베뉴, 음료 메뉴 등 각 카테고리 내에 여러 MenuItem 포함
-    // ArrayList로 카테고리 생성
+
+    private String[] categoryName = {"Burgers", "Drinks", "Side"};
+
+    // 여러 카테고리의 메뉴를 저장하는 리스트
+    private List<List<MenuItem>> category;
+
+    Menu(List<List<MenuItem>> category) {
+        this.category = category;
+    }
+
+    public String[] getCategoryName(){
+        return categoryName;
+    }
+
+    // 리스트 리턴 함수
+    public List<List<MenuItem>> getList(){
+        return category;
+    }
+
+
+
+
 }
