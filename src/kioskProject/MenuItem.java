@@ -1,10 +1,14 @@
 package kioskProject;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MenuItem {
-    //햄버거 이름, 가격
+
     private String name;
     private double price;
     private String explain;
+
+
 
     MenuItem(String name, double price, String explain){
         this.name = name;
@@ -12,10 +16,12 @@ public class MenuItem {
         this.explain = explain;
     }
 
+
     //전체 메뉴 출력용 함수
     public void getMenu(){
         System.out.printf("%s   | W %f | %s%n", name, price, explain);
     }
+
 
     public String getName(){
         return this.name;
