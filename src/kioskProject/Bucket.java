@@ -13,9 +13,6 @@ public class Bucket {
     //Double은 고른 메뉴 가격을
     //Integer는 고른 메뉴 개수를 저장함
 
-    private double totalPrice = 0;
-    private int count;
-
     Bucket(Map<String, Map<Double, Integer>> bucketList){
         this.bucketList = bucketList;
     }
@@ -58,10 +55,11 @@ public class Bucket {
 
     //total price
     public double getTotalPrice(){
+        double totalPrice = 0;
         for(String key1:bucketList.keySet()){
             Map<Double, Integer> value1 = bucketList.get(key1);
             for(Double key2 : value1.keySet()){
-                count = value1.get(key2);
+                int count = value1.get(key2);
                 totalPrice += key2 * count;
             }
         }
@@ -69,7 +67,11 @@ public class Bucket {
     }
 
 
-    // 항목 삭제
+    // 전체 항목 삭제
+    public void removeBucketList(){
+        bucketList.clear();
+    }
+
 
     // 항목 조회
         // 장바구니에 물건이 들어있으면 쓸 수 있는 기능

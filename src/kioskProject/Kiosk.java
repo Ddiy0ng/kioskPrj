@@ -14,6 +14,7 @@ public class Kiosk {
 
         int option;
         int menuOption;
+        int orderOrNot;
 
 
         //시스템
@@ -22,18 +23,6 @@ public class Kiosk {
             printCategory(menu,bucket);
 
             //큰 카테고리: 입력 형식 유효성 검사
-            /*while(true) {
-                System.out.print("-> ");
-                try {
-                    option = sc.nextInt();
-                    sc.nextLine();
-                    break;
-                } catch (InputMismatchException e) {
-                    sc.nextLine();
-                    System.out.println("\n잘못된 형식의 입력입니다. 다시 입력하세요.");
-                }
-            }
-            */
             option = validCheck(sc);
 
             //option에 따라 다른 카테고리 출력
@@ -99,15 +88,34 @@ public class Kiosk {
 
                     break;
                 case 4:
-                    System.out.println("아래와 같이 주문하시겠습니까?\n");
+                    System.out.println("\n아래와 같이 주문하시겠습니까?\n");
                     bucket.getSelectedMenu(menu);
                     System.out.println("\n[ TOTAL ]");
                     System.out.print("W ");
                     System.out.println(bucket.getTotalPrice());
                     System.out.println();
+
+                    System.out.println("1. 주문           2. 메뉴판");
+                    while(true){
+                        orderOrNot = validCheck(sc);
+                        if(orderOrNot == 1){
+                            System.out.printf("%n주문이 완료되었습니다. 금액은 W %f 입니다.%n", bucket.getTotalPrice());
+                            bucket.removeBucketList();
+                            System.out.println();
+                            break;
+                        }
+                        else if(orderOrNot == 2){
+                            System.out.println("메뉴판으로 돌아갑니다.");
+                            break;
+                        }
+                        else{
+                            System.out.println("지원하지 않는 번호 옵션입니다. 다시 입력하세요.");
+                        }
+                    }
                     break;
                 case 5:
-                    System.out.println("아직 구현 안 함");
+                    System.out.println("장바구니의 품목을 모두 지웁니다.");
+                    bucket.removeBucketList();
                     break;
                 default:
                     System.out.println("지원하지 않는 옵션번호 입니다.");
@@ -178,7 +186,7 @@ public class Kiosk {
                     //개수 1개 추가
                     bucket.addCount(name, price);
                 }
-                System.out.printf("%s 이 장바구니에 추가되었습니다.%n", name);
+                System.out.printf("%n%s 이 장바구니에 추가되었습니다.%n%n", name);
                 break;
             }
             else if(addCheck == 2){
@@ -231,5 +239,6 @@ public class Kiosk {
         return menuOption;
 
     }
+
 
 }
