@@ -1,17 +1,15 @@
 package kioskProject;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class Bucket {
     //장바구니 클래스, 항목에 대한 결정, 결제 등을 관리
 
 
     private Map<String, Map<Double, Integer>> bucketList;
-    //String은 고른 메뉴 이름을
-    //Double은 고른 메뉴 가격을
-    //Integer는 고른 메뉴 개수를 저장함
+    //String은 고른 메뉴 이름을   => 키 값
+    //Double은 고른 메뉴 가격을   => value 값이자 키 값
+    //Integer는 고른 메뉴 개수를 저장함 => value 값
 
     Bucket(Map<String, Map<Double, Integer>> bucketList){
         this.bucketList = bucketList;
@@ -23,24 +21,42 @@ public class Bucket {
     }
 
 
-    //고른 메뉴들 전체 출력
+    // 장바구니 조회: 고른 메뉴들 전체 출력
     public void getSelectedMenu(Menu menu){
-        for(String key:bucketList.keySet()){
+        /*
+        *         for(String key:bucketList.keySet()){
             for(int i = 0; i < menu.getList().size(); i++){
                 for(int j = 0; j < menu.getList().get(i).size(); j++){
-                    if(key.equals(menu.getList().get(i).get(j).getName()))
-                        menu.getList().get(i).get(j).getMenu();
+                    String name = menu.getList().get(i).get(j).getName();
+                    if(key.equals(name)) {
+                        double price = menu.getList().get(i).get(j).getPrice();
+
+                        menu.getList().get(i).get(j).getMenu();//메뉴 출력
+                        System.out.printf("개수: %d개%n%n", getCount(key, price)); //각 메뉴의 개수 출력
+                    }
                 }
+            }
+        }*/
+
+        //이름
+        for(String key1 : bucketList.keySet()){
+            //가격
+            for(double key2 : bucketList.get(key1).keySet()){
+                //개수
+                int count = bucketList.get(key1).get(key2);
+                System.out.printf("%s   | W %f | %d개%n", key1, key2, count);
+                //이름, 가격, 개수
+
             }
         }
     }
 
-
+    //장바구니의 특정 메뉴의 개수
     public int getCount(String name, Double price){
-        //장바구니의 특정 메뉴의 개수
         return bucketList.get(name).get(price);
     }
 
+    // 추가 시 개수 1개 증가
     public void addCount(String name, Double price){
         Map<Double, Integer> value;
         value = bucketList.get(name);//선택한 메뉴의 값과 개수
@@ -48,12 +64,8 @@ public class Bucket {
         bucketList.replace(name, value);
     }
 
-    //장바구니에 담긴 메뉴의 종류 수
-    public int getBucketListSize(){
-        return bucketList.size();
-    }
 
-    //total price
+    //총 금액
     public double getTotalPrice(){
         double totalPrice = 0;
         for(String key1:bucketList.keySet()){
@@ -67,16 +79,8 @@ public class Bucket {
     }
 
 
-    // 전체 항목 삭제
+    // 장바구니 비우기
     public void removeBucketList(){
         bucketList.clear();
     }
-
-
-    // 항목 조회
-        // 장바구니에 물건이 들어있으면 쓸 수 있는 기능
-
-    // 주문
-        //담은 모든 항목 출력
-        // 총 금액 출력, 주문하기 클릭 시 장바구니 초기화
 }
