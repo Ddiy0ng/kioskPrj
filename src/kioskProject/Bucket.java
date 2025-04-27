@@ -23,20 +23,6 @@ public class Bucket {
 
     // 장바구니 조회: 고른 메뉴들 전체 출력
     public void getSelectedMenu(Menu menu){
-        /*
-        *         for(String key:bucketList.keySet()){
-            for(int i = 0; i < menu.getList().size(); i++){
-                for(int j = 0; j < menu.getList().get(i).size(); j++){
-                    String name = menu.getList().get(i).get(j).getName();
-                    if(key.equals(name)) {
-                        double price = menu.getList().get(i).get(j).getPrice();
-
-                        menu.getList().get(i).get(j).getMenu();//메뉴 출력
-                        System.out.printf("개수: %d개%n%n", getCount(key, price)); //각 메뉴의 개수 출력
-                    }
-                }
-            }
-        }*/
 
         //이름
         for(String key1 : bucketList.keySet()){
@@ -45,8 +31,6 @@ public class Bucket {
                 //개수
                 int count = bucketList.get(key1).get(key2);
                 System.out.printf("%s   | W %f | %d개%n", key1, key2, count);
-                //이름, 가격, 개수
-
             }
         }
     }
@@ -64,23 +48,25 @@ public class Bucket {
         bucketList.replace(name, value);
     }
 
-
     //총 금액
     public double getTotalPrice(){
         double totalPrice = 0;
         for(String key1:bucketList.keySet()){
-            Map<Double, Integer> value1 = bucketList.get(key1);
-            for(Double key2 : value1.keySet()){
-                int count = value1.get(key2);
+            for(Double key2 : bucketList.get(key1).keySet()){
+                int count = bucketList.get(key1).get(key2);
                 totalPrice += key2 * count;
             }
         }
         return totalPrice;
     }
 
-
     // 장바구니 비우기
-    public void removeBucketList(){
+    public void deleteBucketList(){
         bucketList.clear();
+    }
+
+    // 장바구니에서 특정 메뉴 제거
+    public void removeMenu(){
+
     }
 }

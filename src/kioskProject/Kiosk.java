@@ -43,12 +43,8 @@ public class Kiosk {
 
                     //0 입력 시
                     if(menuOption == 0){
-                        System.out.println("\n뒤로 돌아갑니다.");
                         continue;
                     }
-
-                    // 고른 메뉴 이름, 가격 설명 출력
-                    printSelectedMenu(menu, option, menuOption);
 
                     // 장바구니 추가하든가 안 하든가
                     addBucket(menu, option, menuOption, sc, bucket);
@@ -58,16 +54,13 @@ public class Kiosk {
                     System.out.println("\n[ BEVERAGE MENU ]");
                     printMenu(menu, option);
 
-                    //카테고리 내 메뉴: 입력 형식 유효성 검사
+                    //카테고리 내 메뉴: 입력 형식 유효성 검사_int 타입 아닐 시 예외처리, 배열 크기 초과 입력 처리 포함
                     menuOption =  validCheck(sc, menu, option);
 
+                    //0 입력 시
                     if(menuOption == 0){
-                        System.out.println("\n뒤로 돌아갑니다.");
                         continue;
                     }
-
-                    // 고른 메뉴 출력
-                    printSelectedMenu(menu, option, menuOption);
 
                     // 장바구니 추가하든가 안 하든가
                     addBucket(menu, option, menuOption, sc, bucket);
@@ -77,16 +70,13 @@ public class Kiosk {
                     System.out.println("\n[ SIDE MENU ]");
                     printMenu(menu, option);
 
-                    //카테고리 내 메뉴: 입력 형식 유효성 검사
+                    //카테고리 내 메뉴: 입력 형식 유효성 검사_int 타입 아닐 시 예외처리, 배열 크기 초과 입력 처리 포함
                     menuOption =  validCheck(sc, menu, option);
 
+                    //0 입력 시
                     if(menuOption == 0){
-                        System.out.println("\n뒤로 돌아갑니다.");
                         continue;
                     }
-
-                    // 고른 메뉴 출력
-                    printSelectedMenu(menu, option, menuOption);
 
                     // 장바구니 추가하든가 안 하든가
                     addBucket(menu, option, menuOption, sc, bucket);
@@ -97,7 +87,7 @@ public class Kiosk {
                     break;
                 case 5:
                     System.out.println("장바구니의 품목을 모두 지웁니다.");
-                    bucket.removeBucketList();
+                    bucket.deleteBucketList();
                     break;
                 default:
                     System.out.println("지원하지 않는 옵션번호 입니다.");
@@ -105,6 +95,8 @@ public class Kiosk {
         }
     }
 
+
+    /*start()에서 사용할 함수*/
     //메인메뉴 출력 함수
     public void printCategory(Menu menu, Bucket bucket){
         System.out.println("[ MAIN MENU ]");
@@ -145,8 +137,6 @@ public class Kiosk {
         System.out.println("가격: " + selectedPrice);
         System.out.println("설명: " + selectedExplain);
         System.out.println();
-
-
     }
 
     //장바구니 추가하기 추가 안 하기
@@ -188,6 +178,7 @@ public class Kiosk {
     //주문하기
     public void order(Menu menu, Bucket bucket, Scanner sc){
         int orderOrNot;
+        double totalPrice = bucket.getTotalPrice();
 
         System.out.println("\n아래와 같이 주문하시겠습니까?\n");
         bucket.getSelectedMenu(menu);
@@ -195,18 +186,28 @@ public class Kiosk {
         //총 금액
         System.out.println("\n[ TOTAL ]");
         System.out.print("W ");
-        System.out.println(bucket.getTotalPrice());
+        System.out.println(totalPrice);
         System.out.println();
-
         System.out.println("1. 주문           2. 메뉴판");
 
         while(true){
             orderOrNot = validCheck(sc);
             if(orderOrNot == 1){
-                System.out.printf("%n주문이 완료되었습니다. 금액은 W %f 입니다.%n", bucket.getTotalPrice());
+                //할인 리스트 보여주기
+                User.printDiscountList();
+                double discountPercent = discount(sc);
+
+                System.out.println("할인률: " + discountPercent + "%");
+                System.out.println("할인: " + totalPrice*(discountPercent/100));
+                System.out.println("결제 금액: " + totalPrice*((100-discountPercent)/100));
+
+                //적용된 할인률과 원가, 할인가 출력
+                System.out.printf("%n주문이 완료되었습니다. 결제 금액은 W %f 입니다.%n%n", totalPrice*((100-discountPercent)/100));
 
                 // 주문 완료 후 장바구니 비우기
-                bucket.removeBucketList();
+                bucket.deleteBucketList();
+
+                System.out.println("처음으로 돌아갑니다.\n");
                 System.out.println();
                 break;
             }
@@ -221,7 +222,20 @@ public class Kiosk {
         }
     }
 
-
+    //할인 적용
+    public int discount(Scanner sc){
+        int input;
+        System.out.println("해당하는 사용자 옵션을 선택해주세요.");
+        while(true){
+            input = validCheck(sc);
+            for(User user : User.values()){
+                int num = user.ordinal();
+                if(num == input-1)
+                    return user.getDiscount();
+            }
+            System.out.println("잘못된 입력입니다. 다시 입력하세요.");
+        }
+    }
 
     //유효성 검사
     public int validCheck(Scanner sc){
@@ -247,14 +261,17 @@ public class Kiosk {
             System.out.print("-> ");
             try {
                 menuOption = sc.nextInt();
-                sc.nextLine();
-                // IndexOutOfBound 방지
-                if(menuOption > menu.getList().get(option-1).size()) {
-                    System.out.println("\nIndexOutOfBound. 다시 입력하세요.");
-                    continue;
+
+                if(menuOption == 0){
+                    System.out.println("\n뒤로 돌아갑니다.");
+                    return 0;
                 }
+
+                // 고른 메뉴 출력
+                printSelectedMenu(menu, option, menuOption);
+
                 break;
-            } catch (InputMismatchException e) {
+            } catch (InputMismatchException | IndexOutOfBoundsException e) {
                 sc.nextLine();
                 System.out.println("\n잘못된 형식의 입력입니다. 다시 입력하세요.");
 
