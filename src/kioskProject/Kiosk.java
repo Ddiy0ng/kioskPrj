@@ -91,8 +91,7 @@ public class Kiosk {
                     order(menu, bucket, sc);
                     break;
                 case 5:
-                    System.out.println("\n장바구니의 품목을 모두 지웁니다.\n");
-                    bucket.deleteBucketList();
+                    resetOrder(menu, bucket, sc);
                     break;
                 default:
                     System.out.println("\n지원하지 않는 옵션번호 입니다.\n");
@@ -143,6 +142,33 @@ public class Kiosk {
         System.out.println("가격: " + selectedPrice);
         System.out.println("설명: " + selectedExplain);
         System.out.println();
+    }
+
+    //IndexOutOfBound 포함 유효성 검사 함수
+    public int menuSelect(Scanner sc, Menu menu, int option){
+
+        int menuOption;
+        while(true){
+            System.out.print("-> ");
+            try {
+                menuOption = sc.nextInt();
+
+                if(menuOption == 0){
+                    System.out.println("\n뒤로 돌아갑니다.\n");
+                    return 0;
+                }
+                // 고른 메뉴 출력
+                printSelectedMenu(menu, option, menuOption);
+
+                break;
+            } catch (InputMismatchException | IndexOutOfBoundsException e) {
+                sc.nextLine();
+                System.out.println("\n잘못된 형식의 입력입니다. 다시 입력하세요.");
+
+            }
+        }
+        return menuOption;
+
     }
 
     //장바구니 추가하기 추가 안 하기
@@ -246,6 +272,33 @@ public class Kiosk {
         }
     }
 
+    //장바구니 비우기
+    public void resetOrder(Menu menu, Bucket bucket, Scanner sc){
+        int resetCheck;
+
+        System.out.println();
+        bucket.getSelectedMenuList(menu);
+
+        //여부 체크
+        System.out.println("\n정말 장바구니를 비우시겠습니까?");
+        System.out.println("1. 네           2. 아니요");
+        while(true){
+            resetCheck = validCheck(sc);
+            if(resetCheck == 1){
+                System.out.println("\n장바구니의 품목을 모두 지웠습니다.\n");
+                bucket.deleteBucketList();
+                break;
+            }
+            else if(resetCheck == 2){
+                System.out.println("\n뒤로 돌아갑니다.\n");
+                break;
+            }
+            else{
+                System.out.println("잘못된 입력입니다. 다시 입력해주세요");
+            }
+        }
+    }
+
     //유효성 검사
     public int validCheck(Scanner sc){
         while(true) {
@@ -262,30 +315,4 @@ public class Kiosk {
         }
     }
 
-    //IndexOutOfBound 포함 유효성 검사 함수
-    public int menuSelect(Scanner sc, Menu menu, int option){
-
-        int menuOption;
-        while(true){
-            System.out.print("-> ");
-            try {
-                menuOption = sc.nextInt();
-
-                if(menuOption == 0){
-                    System.out.println("\n뒤로 돌아갑니다.\n");
-                    return 0;
-                }
-                // 고른 메뉴 출력
-                printSelectedMenu(menu, option, menuOption);
-
-                break;
-            } catch (InputMismatchException | IndexOutOfBoundsException e) {
-                sc.nextLine();
-                System.out.println("\n잘못된 형식의 입력입니다. 다시 입력하세요.");
-
-            }
-        }
-        return menuOption;
-
-    }
 }

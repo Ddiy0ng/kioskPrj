@@ -25,6 +25,7 @@ public class Bucket {
     public void getSelectedMenuList(Menu menu){
 
         //이름
+        System.out.println("==장바구니==");
         for(String key1 : bucketList.keySet()){
             //가격
             for(double key2 : bucketList.get(key1).keySet()){
@@ -33,6 +34,7 @@ public class Bucket {
                 System.out.printf("%s   | W %.2f | %d개%n", key1, key2, count);
             }
         }
+        System.out.println("========");
     }
 
     //장바구니의 특정 메뉴의 개수
