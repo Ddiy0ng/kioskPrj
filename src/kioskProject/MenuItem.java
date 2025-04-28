@@ -17,7 +17,7 @@ public class MenuItem {
 
     //전체 메뉴 출력용 함수
     public void getMenu(){
-        System.out.printf("%s   | W %f | %s%n", name, price, explain);
+        System.out.printf("%s   | W %.2f | %s%n", name, price, explain);
     }
 
 

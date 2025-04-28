@@ -22,7 +22,7 @@ public class Bucket {
 
 
     // 장바구니 조회: 고른 메뉴들 전체 출력
-    public void getSelectedMenu(Menu menu){
+    public void getSelectedMenuList(Menu menu){
 
         //이름
         for(String key1 : bucketList.keySet()){
@@ -30,7 +30,7 @@ public class Bucket {
             for(double key2 : bucketList.get(key1).keySet()){
                 //개수
                 int count = bucketList.get(key1).get(key2);
-                System.out.printf("%s   | W %f | %d개%n", key1, key2, count);
+                System.out.printf("%s   | W %.2f | %d개%n", key1, key2, count);
             }
         }
     }
