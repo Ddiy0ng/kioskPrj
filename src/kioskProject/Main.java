@@ -1,9 +1,6 @@
 package kioskProject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args){
@@ -44,7 +41,7 @@ public class Main {
         Kiosk kiosk = new Kiosk();
 
         //장바구니 객체
-        Map<String, Map<Double, Integer>> bucketList = new HashMap<>();
+        Map<String, Map<Double, Integer>> bucketList = new LinkedHashMap<>();
         Bucket bucket = new Bucket(bucketList);
 
         //Kiosk 내 시작 함수 호출

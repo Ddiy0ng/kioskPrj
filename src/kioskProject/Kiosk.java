@@ -2,10 +2,7 @@ package kioskProject;
 
 import jdk.jfr.consumer.RecordedStackTrace;
 
-import java.util.Scanner;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.InputMismatchException;
+import java.util.*;
 
 public class Kiosk {
     //관리자용 클래스
@@ -91,7 +88,7 @@ public class Kiosk {
                     order(menu, bucket, sc);
                     break;
                 case 5:
-                    resetOrder(menu, bucket, sc);
+                    deleteBucketMenu(menu, bucket, sc);
                     break;
                 default:
                     System.out.println("\n지원하지 않는 옵션번호 입니다.\n");
@@ -186,7 +183,7 @@ public class Kiosk {
 
                 //해당 메뉴가 장바구니에 없으면
                 if (!bucket.getBucketList().containsKey(selectedName)) {
-                    Map<Double, Integer> value = new HashMap<>();
+                    Map<Double, Integer> value = new LinkedHashMap<>();
                     value.put(selectedPrice, 1);// 선택한 메뉴의 값과 개수를 1로 해서 HashMap 추가
                     bucket.getBucketList().put(selectedName, value);
                 }
@@ -272,32 +269,80 @@ public class Kiosk {
         }
     }
 
-    //장바구니 비우기
-    public void resetOrder(Menu menu, Bucket bucket, Scanner sc){
-        int resetCheck;
+    //장바구니 품목 삭제
+    public void deleteBucketMenu(Menu menu, Bucket bucket, Scanner sc){
 
-        System.out.println();
-        bucket.getSelectedMenuList(menu);
+        int input;
 
-        //여부 체크
-        System.out.println("\n정말 장바구니를 비우시겠습니까?");
-        System.out.println("1. 네           2. 아니요");
+        System.out.println("\n장바구니 확인");
+        System.out.println("1. 조회");
+        System.out.println("2. 품목 삭제");
+        System.out.println("3. 전체 삭제");
+
         while(true){
-            resetCheck = validCheck(sc);
-            if(resetCheck == 1){
-                System.out.println("\n장바구니의 품목을 모두 지웠습니다.\n");
-                bucket.deleteBucketList();
+            input = validCheck(sc);
+
+            if(input == 1){
+                System.out.println();
+                bucket.getSelectedMenuList(menu);
+                System.out.println();
                 break;
             }
-            else if(resetCheck == 2){
-                System.out.println("\n뒤로 돌아갑니다.\n");
+            else if(input == 2){
+                System.out.println();
+                bucket.getSelectedMenuList(menu);
+                System.out.println("삭제할 품목의 번호를 입력해주세요.");
+                System.out.println("뒤로 돌아가려면 0을 입력해주세요.");
+                while(true){
+                    int deleteOneBucketMenu = validCheck(sc);
+
+                    if(deleteOneBucketMenu == 0) {
+                        System.out.println("\n뒤로 돌아갑니다.\n");
+                        break;
+                    }
+
+                    int removeCheck = bucket.removeOneBucketMenu(deleteOneBucketMenu);
+                    if(removeCheck == 1)
+                        break;
+                    else{
+                        System.out.println("\n잘못된 입력입니다. 다시 입력해주세요");
+                    }
+                }
+                break;
+            }
+            else if(input == 3){
+                //장바구니 완전 비우기
+                int resetCheck;
+
+                System.out.println();
+                bucket.getSelectedMenuList(menu);
+
+                //여부 체크
+                System.out.println("\n정말 장바구니를 비우시겠습니까?");
+                System.out.println("1. 네           2. 아니요");
+                while(true){
+                    resetCheck = validCheck(sc);
+                    if(resetCheck == 1){
+                        System.out.println("\n장바구니의 품목을 모두 지웠습니다.\n");
+                        bucket.deleteBucketList();
+                        break;
+                    }
+                    else if(resetCheck == 2){
+                        System.out.println("\n뒤로 돌아갑니다.\n");
+                        break;
+                    }
+                    else{
+                        System.out.println("\n잘못된 입력입니다. 다시 입력해주세요");
+                    }
+                }
                 break;
             }
             else{
-                System.out.println("잘못된 입력입니다. 다시 입력해주세요");
+                System.out.println("\n잘못된 입력입니다. 다시 입력하세요.");
             }
         }
     }
+
 
     //유효성 검사
     public int validCheck(Scanner sc){
