@@ -11,18 +11,18 @@ public class Bucket {
     //Double은 고른 메뉴 가격을   => value 값이자 키 값
     //Integer는 고른 메뉴 개수를 저장함 => value 값
 
-    Bucket(Map<String, Map<Double, Integer>> bucketList){
+    Bucket(Map<String, Map<Double, Integer>> bucketList) {
         this.bucketList = bucketList;
     }
 
 
     // 장바구니 리스트(맵) 반환
-    public Map<String, Map<Double, Integer>> getBucketList(){
+    public Map<String, Map<Double, Integer>> getBucketList() {
         return bucketList;
     }
 
     // 장바구니 조회: 고른 메뉴들 전체 출력
-    public void getSelectedMenuList(Menu menu){
+    public void getSelectedMenuList(Menu menu) {
 
         //이름
         System.out.println("==장바구니==");
@@ -39,12 +39,12 @@ public class Bucket {
     }
 
     //장바구니의 특정 메뉴의 개수
-    public int getCount(String name, Double price){
+    public int getCount(String name, Double price) {
         return bucketList.get(name).get(price);
     }
 
     // 추가 시 개수 1개 증가
-    public void addCount(String name, Double price){
+    public void addCount(String name, Double price) {
         Map<Double, Integer> value;
         value = bucketList.get(name);//선택한 메뉴의 값과 개수
         value.replace(price, getCount(name, price) + 1);// 개수 + 1
@@ -52,10 +52,10 @@ public class Bucket {
     }
 
     //총 금액
-    public double getTotalPrice(){
+    public double getTotalPrice() {
         double totalPrice = 0;
-        for(String key1:bucketList.keySet()){
-            for(Double key2 : bucketList.get(key1).keySet()){
+        for(String key1:bucketList.keySet()) {
+            for(Double key2 : bucketList.get(key1).keySet()) {
                 int count = bucketList.get(key1).get(key2);
                 totalPrice += key2 * count;
             }
@@ -64,12 +64,12 @@ public class Bucket {
     }
 
     // 장바구니 비우기
-    public void deleteBucketList(){
+    public void deleteBucketList() {
         bucketList.clear();
     }
 
     // 장바구니에서 특정 메뉴 제거
-    public int removeOneBucketMenu(int input){
+    public int removeOneBucketMenu(int input) {
 
         int i = 1;
         int removeCheck = 0;
